@@ -15,6 +15,11 @@ public class daoContrato extends DAO {
     private daoParceiro daoParceiro;
     private daoEspaco daoEspaco;
 
+    public daoContrato() {
+        daoParceiro = new daoParceiro();
+        daoEspaco = new daoEspaco();
+    }
+
 
     public ArrayList<contrato> carregarTodosContratos() {
         ArrayList<contrato> contratos = new ArrayList<>();

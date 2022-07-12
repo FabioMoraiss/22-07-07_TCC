@@ -57,4 +57,20 @@ public class espaco {
         this.localizacao = localizacao;
     }
 // GETTERS AND SETTERS AND 🎈
+
+ public String alugado_view() {
+    if ( estado_alugado) {
+        return "ocupado";
+    } else {
+        return "disponivel";
+    }
+ }
+
+ public String kioque_view() {
+    if (kiosque_loja) {
+        return "loja";
+    } else { 
+        return "kiosque";
+    }
+ }
 }
