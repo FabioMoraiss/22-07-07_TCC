@@ -3,18 +3,46 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package JFrameVisual;
+import controle.Tecladinho;
+import controle.controleContrato;
 
-/**
- *
- * @author rarinaldo.8077
- */
+import javax.swing.JOptionPane;
+
+import JFrameVisual.listaContratos;
+
 public class registrarContrato extends javax.swing.JFrame {
+    private controleContrato controle;
+    private listaContratos atttabela;
+    private telaInicial atttablea2;
 
-    /**
-     * Creates new form registrarContrato
-     */
-    public registrarContrato() {
+    public registrarContrato(listaContratos attTabela) {
+        this.atttabela = attTabela;
+        controle = new controleContrato();
         initComponents();
+    }
+
+    public registrarContrato (telaInicial attTabela2) {
+        this.atttablea2 = attTabela2;
+        controle = new controleContrato();
+        initComponents(); 
+    }
+
+    public registrarContrato(listaContratos attTablea, int idContr) { // EDITAR CONTRATO
+        controle = new controleContrato();
+        this.atttabela = attTablea;
+        controle.carregarContrato(idContr);
+        controle.setEditarRegistro(true);
+        initComponents(); 
+        setLocationRelativeTo(null);
+        setarDados();
+    }
+
+    public void setarDados() {
+        jTextField1DATA_INICIO.setText(Tecladinho.getDateFormat().format(controle.getContrato().getData_inicio()));
+        jTextField2DATA_FIM.setText(Tecladinho.getDateFormat().format(controle.getContrato().getDuracao()));
+        jTextField3VALOR_ENTADA.setText("" +controle.getContrato().getValor_entrada());
+        jTextField4VALOR_ALUGUEL.setText(""+ controle.getContrato().getValor_alugel());
+        jTextField5PORCEMTAGEM_TAXA.setText(""+controle.getContrato().getPorcemtagem_taxa());
     }
 
     /**
@@ -176,7 +204,29 @@ public class registrarContrato extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        try {
+            String dataInicio = jTextField1DATA_INICIO.getText();
+            String dataFim = jTextField2DATA_FIM.getText();
+            String valorEntrada = jTextField3VALOR_ENTADA.getText();
+            String porcemtagem = jTextField5PORCEMTAGEM_TAXA.getText();
+
+            controle.getContrato().setData_inicio(Tecladinho.getDateFormat().parse(dataInicio));
+            controle.getContrato().setDuracao(Tecladinho.getDateFormat().parse(dataFim));
+            controle.getContrato().setValor_entrada(Double.parseDouble(valorEntrada));
+            controle.getContrato().setPorcemtagem_taxa(Double.parseDouble(porcemtagem));
+
+            if(controle.salvar()) {
+                setVisible(true);
+                JOptionPane.showMessageDialog(null, "contrato registrado com sucesso\n",
+                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                if(atttabela != null) {
+                    atttabela.atualizarTabela();
+                }
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "falha ao registar contrato\n" + e.getMessage(),
+        "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
     }                                          
 
     /**
@@ -206,12 +256,6 @@ public class registrarContrato extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registrarContrato().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify                     

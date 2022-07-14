@@ -4,15 +4,25 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class telaInicial extends javax.swing.JFrame {
+import controle.controleContrato;
+import controle.controleEspaco;
+import controle.controleFolha_aluguel;
+import controle.controleLocalizacao;
+import controle.controleParceiro;
+import controle.Tecladinho;
 
-    /**
-     * Creates new form telaInicial
-     */
+public class telaInicial extends javax.swing.JFrame {
+    private registrarParceiro registrarParceiro;
+    private listaParceiros listarparceiros;
+    private registrarContrato registrarContrato;
+    private listaContratos listarcontratos;
+    private listaLocais listarlocais;
+    private registrarLocalizacao registrarLocalizacao;
+    private listaFolha_pagamento listarfolha;
+    private registrarDIVIDA registrardivida;
+    private listaEspacos listarespacos;
+    private registrarEspaco registrarEspaco;
+
     public telaInicial() {
         initComponents();
     }
@@ -145,23 +155,28 @@ public class telaInicial extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton4FOLHA_PAGAMENTOActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        listarfolha = new listaFolha_pagamento();
+        listarfolha.setVisible(true);
     }                                                       
 
     private void jButton2LISTA_CONTRATOSActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        listarcontratos = new listaContratos();
+        listarcontratos.setVisible(true);
     }                                                       
 
     private void jButton1LISTA_ESPACOSActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+        listarespacos = new listaEspacos();
+        listarespacos.setVisible(true);
     }                                                     
 
     private void jButton5LISTA_PARCEIROSActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        listarparceiros = new listaParceiros();
+        listarparceiros.setVisible(true);
     }                                                       
 
     private void jButton3LISTA_LOCAISActionPerformed(java.awt.event.ActionEvent evt) {                                                     
-        // TODO add your handling code here:
+        listarlocais = new listaLocais();
+        listarlocais.setVisible(true);
     }                                                    
 
     /**

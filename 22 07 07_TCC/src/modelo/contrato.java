@@ -96,5 +96,12 @@ public class contrato {
     }
 // GETTERS AND SETTERS AND 🎈
 
+    public String estadoContrato() {
+        if (ativo) {
+            return "ativo";
+        } else {
+            return "inativo";
+        }
+    }
     
 }

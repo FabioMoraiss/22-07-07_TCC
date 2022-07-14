@@ -73,4 +73,12 @@ public class folha_aluguel {
         this.contrato = contrato;
     }
 // GETTERS AND SETTERS AND 🎈
+
+public String estadoDaDivida() {
+    if(foi_pago) {
+        return "quitada" ;
+    } else {
+        return "não paga" ;
+    }
+}
 }

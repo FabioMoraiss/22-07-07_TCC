@@ -4,17 +4,28 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class listaContratos extends javax.swing.JFrame {
+import controle.Tecladinho;
+import controle.controleContrato;
+import modelo.contrato;
 
-    /**
-     * Creates new form listaContratos
-     */
+import javax.swing.JOptionPane;
+
+import JFrameVisual.registrarContrato;
+public class listaContratos extends javax.swing.JFrame {
+    private controleContrato controle;
+    private registrarContrato registrarNovoContrato;
+
     public listaContratos() {
+        controle = new controleContrato();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponenteTela();
+    }
+    private void inicializarComponenteTela() {
+        jTable1.setModel(controle.gerartDefaultTableModel());
+    }
+    public void atualizarTabela() {
+        jTable1.setModel(controle.gerartDefaultTableModel());
     }
 
     /**
@@ -124,15 +135,38 @@ public class listaContratos extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton3ADICIONAR_CONTRATOActionPerformed(java.awt.event.ActionEvent evt) {                                                           
-        // TODO add your handling code here:
+        registrarNovoContrato = new registrarContrato(this);
+        registrarNovoContrato.setVisible(true);
+        atualizarTabela();
     }                                                          
 
     private void jButton1EDITAR_CONTRATOActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um contrato para EDITTAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idcontrato = controle.getListaContratos().get(linha).getId();
+            registrarContrato tela = new registrarContrato(this, idcontrato);
+            tela.setVisible(true);
+            atualizarTabela();
+        }
     }                                                       
 
     private void jButton2REMVER_CONTRATOActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um contrato para APAGAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            contrato contr = controle.getListaContratos().get(linha);
+            int opcao =
+            JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER DELETAR O CONTRATO " + contr.getId()
+            , "COMFIRME SUA ESOCLHA", JOptionPane.YES_NO_CANCEL_OPTION);
+            if(opcao == 0 && controle.deletar(controle.getListaContratos().get(linha))) {
+                atualizarTabela();
+            }
+        }
     }                                                       
 
     /**

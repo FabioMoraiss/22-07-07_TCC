@@ -59,8 +59,8 @@ public class controleLocalizacao {
     }
 // GETTERS AND SETTERS END 🎈
 
-public void carregarLocalizacao(localizacao idlocal) {
-    localizacao = daoLocalizacao.carregarLocalEspecifico(ldlocal);
+public void carregarLocalizacao(int idlocal) {
+    localizacao = daoLocalizacao.carregarLocalEspecifico(idlocal);
 }
 
 public boolean salvar() {
@@ -81,6 +81,26 @@ public void carregarLocalizacoes() {
 public DefaultTableModel gerartDefaultTableModel() {
     carregarLocalizacoes();
     DefaultTableModel model  = new DefaultTableModel();
+
+    model.addColumn("id");
+    model.addColumn("descrição");
+    model.addColumn("andar");
+    model.addColumn("região");
+    model.addColumn("bloco");
+
+    for (int i = 0; i<listaDeLocais.size(); i++) {
+        localizacao loli = listaDeLocais.get(i);
+        Object[] dados = {
+            loli.getId(),
+            loli.getDescricao(),
+            loli.getAndar(),
+            loli.getRegiao(),
+            loli.getBloco(),
+            
+        };
+        model.addRow(dados);
+    }
+    return model;
 }
 
     
