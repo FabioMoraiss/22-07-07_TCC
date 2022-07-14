@@ -7,6 +7,7 @@ import JFrameVisual.listaEspacos;
 import JFrameVisual.registrarEspaco;
 import modelo.espaco;
 import modelo.folha_aluguel;
+import modelo.localizacao;
 import persistencia.daoEspaco;
 import persistencia.daoLocalizacao;
 
@@ -16,12 +17,14 @@ public class controleEspaco {
     private daoEspaco daoEspaco;
     private boolean editarRegistro = false ;
     private daoLocalizacao daoLocalizacao;
+    private ArrayList<localizacao> listarlocais;
 
     public controleEspaco() {
         espaco = new espaco();
         listaEspacos = new ArrayList<>();
         daoEspaco = new daoEspaco();
         daoLocalizacao = new daoLocalizacao();
+        listarlocais = daoLocalizacao.carregarTodosLocalizacao();
     }
 
     // GETTERS AND SETTERS START 🎈
@@ -69,6 +72,15 @@ public class controleEspaco {
     public void setDaoLocalizacao(daoLocalizacao daoLocalizacao) {
         this.daoLocalizacao = daoLocalizacao;
     }
+
+    public ArrayList<localizacao> getListarlocais() {
+        return this.listarlocais;
+    }
+
+    public void setListarlocais(ArrayList<localizacao> listarlocais) {
+        this.listarlocais = listarlocais;
+    }
+
 // GETTERS AND SETTERS END 🎈
 
     public boolean salvar() {
@@ -113,7 +125,13 @@ public class controleEspaco {
         }
         return model;
     }
-
+    public Integer[] exibirLocalizacao() {
+        Integer[] locais = new Integer[listarlocais.size()];
+        for(int i = 0; i<listarlocais.size(); i++) {
+            locais[i]  =listaEspacos.get(i).getId();
+        }
+        return locais;
+    }
     
     
 }

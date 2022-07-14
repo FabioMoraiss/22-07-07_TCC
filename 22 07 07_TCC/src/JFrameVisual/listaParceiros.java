@@ -34,7 +34,7 @@ public class listaParceiros extends javax.swing.JFrame {
         jButton2REMOVER_PARCEIRO = new javax.swing.JButton();
         jButton3ADCIONAR_PARCEIRO = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Agency FB", 0, 30)); // NOI18N
         jLabel1.setText("Lista de Parceiros");

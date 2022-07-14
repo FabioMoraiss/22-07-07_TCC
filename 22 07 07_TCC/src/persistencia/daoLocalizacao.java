@@ -18,7 +18,7 @@ public class daoLocalizacao extends DAO{
                 localizacao local = new localizacao();
                 local.setId(rs.getInt("id"));
                 local.setDescricao(rs.getString("descricao"));
-                local.setAndar(rs.getInt("andar"));
+                local.setAndar(rs.getString("andar"));
                 local.setRegiao(rs.getString("regiao"));
                 local.setBloco(rs.getString("bloco"));
 
@@ -44,7 +44,7 @@ public class daoLocalizacao extends DAO{
                 localEspecifico = new localizacao();
                 localEspecifico.setId(rs.getInt("id"));
                 localEspecifico.setDescricao(rs.getString("descricao"));
-                localEspecifico.setAndar(rs.getInt("andar"));
+                localEspecifico.setAndar(rs.getString("andar"));
                 localEspecifico.setRegiao(rs.getString("regiao"));
                 localEspecifico.setBloco(rs.getString("bloco"));
 
@@ -67,7 +67,7 @@ public class daoLocalizacao extends DAO{
             locali.setId(gerarProximoID("localizacao"));
             ps.setInt(1, locali.getId());
             ps.setString(2, locali.getDescricao());
-            ps.setInt(3, locali.getAndar());
+            ps.setString(3, locali.getAndar());
             ps.setString(4, locali.getRegiao());
             ps.setString(5, locali.getBloco());
 
@@ -109,7 +109,7 @@ public class daoLocalizacao extends DAO{
             PreparedStatement ps = criaPreparedStatement(sql);
 
             ps.setString(1, locali.getDescricao());
-            ps.setInt(2, locali.getAndar());
+            ps.setString(2, locali.getAndar());
             ps.setString(3, locali.getRegiao());
             ps.setString(4, locali.getBloco());
 

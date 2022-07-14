@@ -40,7 +40,7 @@ public class registrarParceiro extends javax.swing.JFrame {
         EMAIL = new javax.swing.JTextField();
         jButton1OK = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel1.setText("REGISTRO DE PARCEIRO");

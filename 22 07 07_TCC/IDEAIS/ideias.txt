@@ -1,0 +1,4 @@
+depois de clicar no botao ok (SALVAR informação){
+    aparecer a tela de comfirmação que deu tudo certo
+    perguntar se  você quer registrar um novo objeto, ou fechar a tela !!
+}

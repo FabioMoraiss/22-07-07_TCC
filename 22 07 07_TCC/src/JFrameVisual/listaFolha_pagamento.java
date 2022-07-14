@@ -34,7 +34,7 @@ public class listaFolha_pagamento extends javax.swing.JFrame {
         jButton2REMOVER_DIVIDA = new javax.swing.JButton();
         jButton3ADICIONAR_DIVIDA = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Agency FB", 0, 30)); // NOI18N
         jLabel1.setText("Folha de Pagamento");

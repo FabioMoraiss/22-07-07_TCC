@@ -4,17 +4,27 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class listaLocais extends javax.swing.JFrame {
+import controle.controleLocalizacao;
+import modelo.localizacao;
+import javax.swing.JOptionPane;
 
+public class listaLocais extends javax.swing.JFrame {
+    private controleLocalizacao controle;
+    private registrarLocalizacao registrarNovaLocalizacao;
     /**
      * Creates new form listaContratos
      */
     public listaLocais() {
+        controle = new controleLocalizacao();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponenteTela();
+    }
+    private void inicializarComponenteTela() {
+        jTable1.setModel(controle.gerartDefaultTableModel());
+    }
+    public void atualizarTabela() {
+        jTable1.setModel(controle.gerartDefaultTableModel());
     }
 
     /**
@@ -34,7 +44,7 @@ public class listaLocais extends javax.swing.JFrame {
         jButton2REMOVER_LOCAL = new javax.swing.JButton();
         jButton3ADICIONAR_LOCAL = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Agency FB", 0, 30)); // NOI18N
         jLabel1.setText("Lista de Locais");
@@ -124,15 +134,38 @@ public class listaLocais extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton2REMOVER_LOCALActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione uma localização parar APAGAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            localizacao local = controle.getListaDeLocais().get(linha);
+            int opcao =
+            JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER DELETAR O LOCAL " + local.getId()
+            , "COMFIRME SUA ESOCLHA !", JOptionPane.YES_NO_CANCEL_OPTION);
+            if(opcao == 0 && controle.deletar(controle.getListaDeLocais().get(linha))) {
+                atualizarTabela();
+            }
+        }
     }                                                     
 
     private void jButton3ADICIONAR_LOCALActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        registrarNovaLocalizacao = new registrarLocalizacao(this);
+        registrarNovaLocalizacao.setVisible(true);
+        atualizarTabela();
     }                                                       
 
     private void jButton1EDITAR_LOCALActionPerformed(java.awt.event.ActionEvent evt) {                                                     
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione uma localização para EDITAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idlocal = controle.getListaDeLocais().get(linha).getId();
+            registrarLocalizacao tela = new registrarLocalizacao(this, idlocal);
+            tela.setVisible(true);
+            atualizarTabela();
+        }
     }                                                    
 
     /**

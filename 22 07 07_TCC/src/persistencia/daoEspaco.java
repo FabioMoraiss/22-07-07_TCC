@@ -41,7 +41,7 @@ public class daoEspaco extends DAO {
                 if(rs.getObject("id_localizacao", Integer.class) != null) {
                     espaco.getLocalizacao().setId(rs.getInt("id_localizacao"));
                     espaco.getLocalizacao().setDescricao(rs.getString("descricao"));
-                    espaco.getLocalizacao().setAndar(rs.getInt("andar"));
+                    espaco.getLocalizacao().setAndar(rs.getString("andar"));
                     espaco.getLocalizacao().setRegiao(rs.getString("regiao"));
                     espaco.getLocalizacao().setBloco(rs.getString("bloco"));
                 }

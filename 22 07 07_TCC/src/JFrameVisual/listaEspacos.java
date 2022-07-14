@@ -4,17 +4,26 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class listaEspacos extends javax.swing.JFrame {
+import controle.controleEspaco;
+import modelo.espaco;
+import javax.swing.JOptionPane;
 
-    /**
-     * Creates new form listaContratos
-     */
+
+public class listaEspacos extends javax.swing.JFrame {
+    private controleEspaco controle;
+    private registrarEspaco registarNovoEspaco;
+    
     public listaEspacos() {
+        controle = new controleEspaco();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponenteTela();
+    }
+    private void inicializarComponenteTela() {
+        jTable1.setModel(controle.gerarTablemodelEspaco());
+    }
+    public void atualizarTabela() {
+        jTable1.setModel(controle.gerarTablemodelEspaco());
     }
 
     /**
@@ -34,7 +43,7 @@ public class listaEspacos extends javax.swing.JFrame {
         jButton2REMOVER_ESPACO = new javax.swing.JButton();
         jButton3ADICIONAR_ESPACO = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Agency FB", 0, 30)); // NOI18N
         jLabel1.setText("Lista de Espaços");
@@ -124,15 +133,38 @@ public class listaEspacos extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton3ADICIONAR_ESPACOActionPerformed(java.awt.event.ActionEvent evt) {                                                         
-        // TODO add your handling code here:
+        registarNovoEspaco = new registrarEspaco(this);
+        registarNovoEspaco.setVisible(true);
+        atualizarTabela();
     }                                                        
 
     private void jButton1EDITAR_ESPACOActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um espaço para EDITAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idEspaco = controle.getListaEspacos().get(linha).getId();
+            registrarEspaco tela = new registrarEspaco(this, idEspaco);
+            tela.setVisible(true);
+            atualizarTabela();
+        }
     }                                                     
 
     private void jButton2REMOVER_ESPACOActionPerformed(java.awt.event.ActionEvent evt) {                                                       
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um espaço para APAGAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            espaco espace = controle.getListaEspacos().get(linha);
+            int opcao =
+            JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER DELETAR O ESPAÇO " + espace.getId()
+            , "COMFIRME SUA ESOCLHA !", JOptionPane.YES_NO_CANCEL_OPTION);
+            if(opcao == 0 && controle.deletar(controle.getListaEspacos().get(linha))) {
+                atualizarTabela();
+            }
+        }
     }                                                      
 
     /**

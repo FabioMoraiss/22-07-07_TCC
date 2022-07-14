@@ -6,6 +6,7 @@ package JFrameVisual;
 import controle.Tecladinho;
 import controle.controleContrato;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 import JFrameVisual.listaContratos;
@@ -19,12 +20,22 @@ public class registrarContrato extends javax.swing.JFrame {
         this.atttabela = attTabela;
         controle = new controleContrato();
         initComponents();
+        inicializarComponentes();
     }
 
     public registrarContrato (telaInicial attTabela2) {
         this.atttablea2 = attTabela2;
         controle = new controleContrato();
         initComponents(); 
+        inicializarComponentes();
+    }
+
+    private void inicializarComponentes() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(controle.exibirParceiros());
+        jComboBox1PARCEIRO.setModel(model);
+
+        DefaultComboBoxModel<Integer> model01 = new DefaultComboBoxModel<Integer>(controle.exibirEspacos());
+        jComboBox2ESPACO.setModel(model01);
     }
 
     public registrarContrato(listaContratos attTablea, int idContr) { // EDITAR CONTRATO
@@ -43,6 +54,8 @@ public class registrarContrato extends javax.swing.JFrame {
         jTextField3VALOR_ENTADA.setText("" +controle.getContrato().getValor_entrada());
         jTextField4VALOR_ALUGUEL.setText(""+ controle.getContrato().getValor_alugel());
         jTextField5PORCEMTAGEM_TAXA.setText(""+controle.getContrato().getPorcemtagem_taxa());
+        jComboBox1PARCEIRO.setSelectedItem(controle.getContrato().getParceiro());
+        jComboBox2ESPACO.setSelectedItem(controle.getContrato().getEspaco());
     }
 
     /**
@@ -72,7 +85,7 @@ public class registrarContrato extends javax.swing.JFrame {
         jComboBox2ESPACO = new javax.swing.JComboBox<>();
         jButton1OK = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel1.setText("REGISTRO DE CONTRATO");
@@ -93,7 +106,7 @@ public class registrarContrato extends javax.swing.JFrame {
 
         jLabel8.setText("espaco");
 
-        jComboBox2ESPACO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //jComboBox2ESPACO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1OK.setText("OK");
         jButton1OK.addActionListener(new java.awt.event.ActionListener() {
@@ -209,11 +222,18 @@ public class registrarContrato extends javax.swing.JFrame {
             String dataFim = jTextField2DATA_FIM.getText();
             String valorEntrada = jTextField3VALOR_ENTADA.getText();
             String porcemtagem = jTextField5PORCEMTAGEM_TAXA.getText();
+            String parceiro = jComboBox1PARCEIRO.getSelectedItem().toString();
+            String espaco = jComboBox2ESPACO.getSelectedItem().toString();
 
             controle.getContrato().setData_inicio(Tecladinho.getDateFormat().parse(dataInicio));
             controle.getContrato().setDuracao(Tecladinho.getDateFormat().parse(dataFim));
             controle.getContrato().setValor_entrada(Double.parseDouble(valorEntrada));
             controle.getContrato().setPorcemtagem_taxa(Double.parseDouble(porcemtagem));
+
+            int posiao = jComboBox1PARCEIRO.getSelectedIndex();
+            controle.getContrato().setParceiro(controle.getListarparceiros().get(posiao));
+            int posicao02 = jComboBox2ESPACO.getSelectedIndex();
+            controle.getContrato().setEspaco(controle.getListarespacos().get(posicao02));
 
             if(controle.salvar()) {
                 setVisible(true);
@@ -225,7 +245,7 @@ public class registrarContrato extends javax.swing.JFrame {
             }
         }catch (Exception e) {
             JOptionPane.showMessageDialog(null, "falha ao registar contrato\n" + e.getMessage(),
-        "ERRO", JOptionPane.ERROR_MESSAGE);
+        "ERRO 53jj", JOptionPane.ERROR_MESSAGE);
         }
     }                                          
 
@@ -261,7 +281,7 @@ public class registrarContrato extends javax.swing.JFrame {
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1OK;
     private javax.swing.JComboBox<String> jComboBox1PARCEIRO;
-    private javax.swing.JComboBox<String> jComboBox2ESPACO;
+    private javax.swing.JComboBox<Integer> jComboBox2ESPACO;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -17,7 +17,6 @@ public class conexaobd {
 
             Class.forName("org.postgresql.Driver");
             conexao = DriverManager.getConnection(url, usuario, senha);
-            System.out.println("conexao realizada ONII-CHAN 🧡");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "FALHA NA CONEXAO COM BANCO DE DADOS\n" + ex.getMessage(),
             "erro 1111", JOptionPane.ERROR_MESSAGE);

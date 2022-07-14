@@ -4,17 +4,40 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class registrarLocalizacao extends javax.swing.JFrame {
+import javax.swing.JOptionPane;
+import controle.controleLocalizacao;
 
-    /**
-     * Creates new form registrarContrato
-     */
-    public registrarLocalizacao() {
+import JFrameVisual.listaLocais;
+
+public class registrarLocalizacao extends javax.swing.JFrame {
+    private controleLocalizacao controle;
+    private listaLocais atttabela;
+    private telaInicial atttabela2;
+
+    public registrarLocalizacao(listaLocais atttabela) {
+        this.atttabela = atttabela;
+        controle = new controleLocalizacao();
         initComponents();
+    }
+    public registrarLocalizacao(telaInicial atttabela2){
+        this.atttabela2 = atttabela2;
+        controle = new controleLocalizacao();
+        initComponents();
+    }
+    public registrarLocalizacao(listaLocais atttabela, int idLocal) { // EDITAR LOCALIZAÇÃO
+        controle = new controleLocalizacao();
+        this.atttabela = atttabela;
+        controle.carregarLocalizacao(idLocal);
+        controle.setEditarRegistro(true);
+        initComponents();
+        setarDados();
+    }
+
+    public void setarDados() {
+        jTextField1DESCRICAO.setText(controle.getLocalizacao().getDescricao());
+        jComboBox3ANDAR.setSelectedItem(controle.getLocalizacao().getAndar());
+        jComboBox1REGIAO.setSelectedItem(controle.getLocalizacao().getRegiao());
+        jComboBox2BLOCO.setSelectedItem(controle.getLocalizacao().getBloco());
     }
 
     /**
@@ -38,7 +61,7 @@ public class registrarLocalizacao extends javax.swing.JFrame {
         jComboBox3ANDAR = new javax.swing.JComboBox<>();
         jButton1OK = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel1.setText("REGISTRO DE LOCALIZACAO");
@@ -60,7 +83,7 @@ public class registrarLocalizacao extends javax.swing.JFrame {
             }
         });
 
-        jComboBox3ANDAR.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terreo", "1 andar", "2 andar", "3 andar", "4 andar", " " }));
+        jComboBox3ANDAR.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terreo", "1 andar", "2 andar", "3 andar", "4 andar"}));
 
         jButton1OK.setText("OK");
         jButton1OK.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +171,30 @@ public class registrarLocalizacao extends javax.swing.JFrame {
     }                                               
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        try {
+            String descricao = jTextField1DESCRICAO.getText();
+            String andar = jComboBox3ANDAR.getSelectedItem().toString();
+            String regiao = jComboBox1REGIAO.getSelectedItem().toString();
+            String bloco = jComboBox2BLOCO.getSelectedItem().toString();
+
+            controle.getLocalizacao().setDescricao(descricao);
+            controle.getLocalizacao().setAndar(andar);
+            controle.getLocalizacao().setRegiao(regiao);
+            controle.getLocalizacao().setBloco(bloco);
+
+            if(controle.salvar()) {
+                setVisible(true);
+                JOptionPane.showMessageDialog(null, "localização registrada com sucesso\n",
+                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+
+                if(atttabela != null) {
+                    atttabela.atualizarTabela();
+                }
+            } 
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "falha ao registar locaolização\n" + e.getMessage(),
+        "ERRO 99kk", JOptionPane.ERROR_MESSAGE);
+        }
     }                                          
 
     /**
@@ -179,12 +225,6 @@ public class registrarLocalizacao extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registrarLocalizacao().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify                     

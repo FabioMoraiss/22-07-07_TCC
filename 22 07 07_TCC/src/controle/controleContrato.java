@@ -19,6 +19,8 @@ public class controleContrato {
     private boolean editarRegistro = false;
     private daoParceiro daoParceiro;
     private daoEspaco daoEspaco;
+    private ArrayList<parceiro> listarparceiros;
+    private ArrayList<espaco> listarespacos;
 
     public controleContrato() {
         listaContratos = new ArrayList<>();
@@ -28,8 +30,11 @@ public class controleContrato {
         daocontrato = new daoContrato();
         daoParceiro = new daoParceiro();
         daoEspaco = new daoEspaco();
+        listarparceiros = daoParceiro.carregarTodosParceiros();
+        listarespacos = daoEspaco.carregarTodosEspacos();
     }
     // GETTERS AND SETTERS START 🎈
+
 
     public contrato getContrato() {
         return this.contrato;
@@ -99,6 +104,23 @@ public class controleContrato {
         this.daoEspaco = daoEspaco;
     }
 
+    public ArrayList<parceiro> getListarparceiros() {
+        return this.listarparceiros;
+    }
+
+    public void setListarparceiros(ArrayList<parceiro> listarparceiros) {
+        this.listarparceiros = listarparceiros;
+    }
+
+    public ArrayList<espaco> getListarespacos() {
+        return this.listarespacos;
+    }
+
+    public void setListarespacos(ArrayList<espaco> listarespacos) {
+        this.listarespacos = listarespacos;
+    }
+    
+
     // GETTERS AND SETTERS END 🎈
 
     public void carregarContrato(int idcontrato) {
@@ -118,6 +140,8 @@ public class controleContrato {
     public void carregarContratos() {
         listaContratos = daocontrato.carregarTodosContratos();
     }
+
+
 
     public DefaultTableModel gerartDefaultTableModel() {
         carregarContratos();
@@ -151,6 +175,23 @@ public class controleContrato {
         return model;
     }
 
+    //--------------------------------------------------
+
+    public String[] exibirParceiros() {
+        String[] parceiros = new String[listarparceiros.size()];
+        for (int i = 0; i<listarparceiros.size(); i++) {
+            parceiros[i] = listarparceiros.get(i).getNome_fantasia();
+        }
+        return parceiros;
+    } 
+
+    public Integer[] exibirEspacos() {
+        Integer[] espacos = new Integer[listarespacos.size()];
+        for(int i = 0; i<listarespacos.size(); i++) {
+            espacos[i] = listarespacos.get(i).getId();
+        }
+        return espacos;
+    }
 
 
     

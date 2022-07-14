@@ -3,7 +3,7 @@ package modelo;
 public class localizacao {
     private Integer id;
     private String descricao;
-    private Integer andar;
+    private String andar;
     private String regiao;
     private String bloco;
 
@@ -25,11 +25,11 @@ public class localizacao {
         this.descricao = descricao;
     }
 
-    public Integer getAndar() {
+    public String getAndar() {
         return this.andar;
     }
 
-    public void setAndar(Integer andar) {
+    public void setAndar(String andar) {
         this.andar = andar;
     }
 

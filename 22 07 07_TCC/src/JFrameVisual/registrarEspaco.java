@@ -4,17 +4,46 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
-public class registrarEspaco extends javax.swing.JFrame {
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import controle.controleEspaco;
 
-    /**
-     * Creates new form registrarContrato
-     */
-    public registrarEspaco() {
+
+public class registrarEspaco extends javax.swing.JFrame {
+    private controleEspaco controle;
+    private listaEspacos atttabela;
+    private telaInicial atttabela2;
+
+    public registrarEspaco(listaEspacos atttabela) {
+        this.atttabela = atttabela;
+        controle = new controleEspaco();
         initComponents();
+    }
+    public registrarEspaco(telaInicial atttabela2) {
+        this.atttabela2 = atttabela2;
+        controle = new controleEspaco();
+        initComponents();
+    }
+    public registrarEspaco(listaEspacos atttabela, int idEspaco) {
+        controle = new controleEspaco();
+        this.atttabela = atttabela;
+        controle.carregarEspaco(idEspaco);
+        controle.setEditarRegistro(true);
+        initComponents();
+        setarDados();
+    }
+
+    public void inicializarComponentes() {
+        DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<Integer>(controle.exibirLocalizacao());
+        jComboBox1LOCALIZACAO.setModel(model);
+    }
+
+    public void setarDados() {
+        jTextField1METROS_QUADRADOS.setText(""+controle.getEspaco().getMetros_quadrados());
+        jComboBox3KIOSQUE_LOJA.setSelectedItem(controle.getEspaco().getKiosque_loja());
+        jComboBox1LOCALIZACAO.setSelectedItem(controle.getEspaco().getLocalizacao());
+
+
     }
 
     /**
@@ -36,7 +65,7 @@ public class registrarEspaco extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jButton1OK = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel1.setText("REGISTRO DE ESPAÇO");
@@ -45,7 +74,7 @@ public class registrarEspaco extends javax.swing.JFrame {
 
         jLabel7.setText("localização");
 
-        jComboBox1LOCALIZACAO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //jComboBox1LOCALIZACAO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBox3KIOSQUE_LOJA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kiosque", "Loja" }));
 
@@ -126,7 +155,39 @@ public class registrarEspaco extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        try {
+            String metrosQuadrados = jTextField1METROS_QUADRADOS.getText();
+            String kiosqueLoja = jComboBox3KIOSQUE_LOJA.getSelectedItem().toString();
+            if(kiosqueLoja.equalsIgnoreCase("Kiosque")) {
+                controle.getEspaco().setKiosque_loja(false);
+            } else {
+                controle.getEspaco().setKiosque_loja(true);
+            }
+
+            controle.getEspaco().setMetros_quadrados(Double.parseDouble(metrosQuadrados));
+
+            int posicao = jComboBox1LOCALIZACAO.getSelectedIndex();
+            controle.getEspaco().setLocalizacao(controle.getListarlocais().get(posicao));
+
+            Boolean estado = false;
+            controle.getEspaco().setEstado_alugado(estado);
+
+
+
+            if(controle.salvar()) {
+                setVisible(true);
+                JOptionPane.showMessageDialog(null, "espaço registrado com sucesso\n",
+                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+
+                if(atttabela != null) {
+                    atttabela.atualizarTabela();
+                }
+            } 
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "falha ao registar locaolização\n" + e.getMessage(),
+        "ERRO 44LL", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }                                          
 
     /**
@@ -156,18 +217,11 @@ public class registrarEspaco extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registrarEspaco().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1OK;
-    private javax.swing.JComboBox<String> jComboBox1LOCALIZACAO;
+    private javax.swing.JComboBox<Integer> jComboBox1LOCALIZACAO;
     private javax.swing.JComboBox<String> jComboBox3KIOSQUE_LOJA;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
