@@ -57,13 +57,13 @@ public class daoContrato extends DAO {
 
     }
     public contrato carregarContratoEspecifio(int id ) {
-        contrato contratoEspecifico = null;
+        contrato contrato = null;
         try {
             String sql = "select * from contrato where id = " +id;
             ResultSet rs = consultaSQL(sql);
             
             if(rs.next()) {
-                contrato contrato = new contrato();
+                contrato = new contrato();
                 contrato.setId(rs.getInt("id"));
                 contrato.setDuracao(rs.getDate("duracao"));
                 contrato.setValor_entrada(rs.getDouble("valor_entrada"));
@@ -86,7 +86,7 @@ public class daoContrato extends DAO {
             JOptionPane.showMessageDialog(null, ("falha ao carregar contrato especifico\n" + ex.getMessage()),
              "erro 77hh", JOptionPane.ERROR_MESSAGE);
         }
-        return contratoEspecifico;
+        return contrato;
     }
 
     public boolean salvar(contrato contr) {
@@ -105,22 +105,24 @@ public class daoContrato extends DAO {
                 ps.setDouble(5, contr.getPorcemtagem_taxa());
                 ps.setDate(6, new java.sql.Date(contr.getData_inicio().getTime()));
 
+                ps.setBoolean(7, contr.getAtivo());
+
                 if(contr.getParceiro() != null) {
                     if (contr.getParceiro().getId() == null || contr.getParceiro().getId() == 0) {
                         daoParceiro.registrarParceiro(contr.getParceiro());
                     }
-                    ps.setInt(7, contr.getParceiro().getId());
+                    ps.setInt(8, contr.getParceiro().getId());
                 } else {
-                    ps.setObject(7, null);
+                    ps.setObject(8, null);
                 }
 
                 if(contr.getEspaco() != null) {
                     if (contr.getEspaco().getId() == null || contr.getEspaco().getId() == 0) {
                         daoEspaco.registrarEspaco(contr.getEspaco()) ;
                     }
-                    ps.setObject(8, contr.getEspaco().getId());
+                    ps.setObject(9, contr.getEspaco().getId());
                 } else {
-                    ps.setObject(8, null);
+                    ps.setObject(9, null);
                 }
 
                 ps.execute();

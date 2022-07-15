@@ -20,7 +20,7 @@ public class daoFolha_aluguel extends DAO{
     public ArrayList<folha_aluguel> carregarTodasDividas() {
         ArrayList<folha_aluguel> guias = new ArrayList<>();
         try {
-            String sql = "select * from public.folha_aluguel\n" +
+            String sql = "select * from public.folha_alugel\n" +
             "left join contrato as contr on id_contrato = contr.id\n" +
             "order by folha_alugel.id;" ;
 
@@ -35,10 +35,15 @@ public class daoFolha_aluguel extends DAO{
                 folha.setNumero_parcela(rs.getInt("numero_parcela"));
                 folha.setData_vencimento(rs.getDate("data_vencimento"));
 
-                if(rs.getObject("id_contrato", Integer.class) != null) {
+                Integer idContrato = rs.getInt("id_contrato");
+                if(idContrato != null && idContrato> 0) {
+                    folha.setContrato(daocontrato.carregarContratoEspecifio(idContrato));
+                }
+
+                /*if(rs.getObject("id_contrato", Integer.class) != null) {
                     folha.getContrato().setId(rs.getInt("id_contrato"));
                     folha.getContrato().getParceiro().setNome_fantasia(rs.getString("nome_fantasia"));
-                    folha.getContrato().getEspaco().setId(rs.getInt("id_espaco"));
+                    folha.getContrato().getEspaco().setId(rs.getInt("id_espaco")); */
 
                     /*folha.getContrato().setDuracao(rs.getDate("duração"));
                     folha.getContrato().setValor_entrada(rs.getDouble("valor_entrada"));
@@ -47,7 +52,6 @@ public class daoFolha_aluguel extends DAO{
                     folha.getContrato().setData_inicio(rs.getDate("data_inicio"));
                     folha.getContrato().setAtivo(rs.getBoolean("ativo")); */
 
-                }
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ("falha ao carregar folha de aluguel\n" + ex.getMessage()),
@@ -63,13 +67,14 @@ public class daoFolha_aluguel extends DAO{
 
                 PreparedStatement ps = criaPreparedStatement(sql);
 
-                fol.setId(gerarProximoID("folha_aluguel"));
+                fol.setId(gerarProximoID("folha_alugel"));
                 ps.setInt(1, fol.getId());
                 ps.setDouble(2, fol.getValor());
-                ps.setString(3, fol.getDescricao());
-                ps.setInt(4, fol.getNumero_parcela());
-                ps.setDate(5, new java.sql.Date(fol.getData_vencimento().getTime()));
-                ps.setInt(6, fol.getContrato().getId());
+                ps.setBoolean(3, fol.getFoi_pago());
+                ps.setString(4, fol.getDescricao());
+                ps.setInt(5, fol.getNumero_parcela());
+                ps.setDate(6, new java.sql.Date(fol.getData_vencimento().getTime()));
+                ps.setInt(7, fol.getContrato().getId());
 
                 ps.execute();
                 return true;

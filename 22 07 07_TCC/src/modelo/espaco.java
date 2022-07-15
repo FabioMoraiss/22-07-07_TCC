@@ -7,6 +7,10 @@ public class espaco {
     private boolean kiosque_loja;
     private localizacao localizacao;
     
+
+    public espaco() {
+        localizacao = new localizacao();
+    }
     // GETTERS AND SETTERS START 🎈
 
     public Integer getId() {

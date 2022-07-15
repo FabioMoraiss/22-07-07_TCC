@@ -3,18 +3,24 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.folha_aluguel;
+import modelo.contrato;
 import persistencia.daoFolha_aluguel;
+import persistencia.daoContrato;
 
 public class controleFolha_aluguel {
     private folha_aluguel folha_aluguel;
     private ArrayList<folha_aluguel> listaDividas;
     private daoFolha_aluguel daoFolha_aluguel;
     private boolean editarRegistro = false;
+    private daoContrato daoContrato;
+    private ArrayList<contrato> listarContratos;
 
     public controleFolha_aluguel() {
         listaDividas = new ArrayList<>();
         folha_aluguel = new folha_aluguel();
         daoFolha_aluguel = new daoFolha_aluguel();
+        daoContrato = new daoContrato();
+        listarContratos = daoContrato.carregarTodosContratos();
     }
 
     // GETTERS AND SETTERS START 🎈
@@ -54,7 +60,25 @@ public class controleFolha_aluguel {
     public void setEditarRegistro(boolean editarRegistro) {
         this.editarRegistro = editarRegistro;
     }
-// GETTERS AND SETTERS END 🎈
+
+    public daoContrato getDaoContrato() {
+        return this.daoContrato;
+    }
+
+    public void setDaoContrato(daoContrato daoContrato) {
+        this.daoContrato = daoContrato;
+    }
+
+    public ArrayList<contrato> getListarContratos() {
+        return this.listarContratos;
+    }
+
+    public void setListarContratos(ArrayList<contrato> listarContratos) {
+        this.listarContratos = listarContratos;
+    }
+
+   
+    // GETTERS AND SETTERS END 🎈
 
     public void carregarDivida(int iddivida) {
         folha_aluguel = daoFolha_aluguel.carregarDividaEspecifica(iddivida);
@@ -101,6 +125,13 @@ public class controleFolha_aluguel {
             model.addRow(dados);
        }
        return model;
+    }
+    public Integer[] exibirContratos() {
+        Integer[] contratos = new Integer[listarContratos.size()];
+        for(int i = 0; i<listarContratos.size(); i++) {
+            contratos[i] = listarContratos.get(i).getId();
+        }
+        return contratos;
     }
 
     

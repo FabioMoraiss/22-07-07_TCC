@@ -3,18 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package JFrameVisual;
+import controle.controleParceiro;
+import modelo.parceiro;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author rarinaldo.8077
- */
 public class listaParceiros extends javax.swing.JFrame {
+    private controleParceiro controle;
+    private registrarParceiro registarNovoParceiro;
 
-    /**
-     * Creates new form listaContratos
-     */
     public listaParceiros() {
+        controle = new controleParceiro();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponenteTela();
+    }
+    private void inicializarComponenteTela() {
+        jTable1.setModel(controle.gerarDefaultTableModel());
+    }
+    public void atualizarTabela() {
+        jTable1.setModel(controle.gerarDefaultTableModel());
     }
 
     /**
@@ -124,15 +131,38 @@ public class listaParceiros extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton3ADCIONAR_PARCEIROActionPerformed(java.awt.event.ActionEvent evt) {                                                          
-        // TODO add your handling code here:
+        registarNovoParceiro = new registrarParceiro(this);
+        registarNovoParceiro.setVisible(true);
+        atualizarTabela();
     }                                                         
 
     private void jButton1EDITAR_PARCEIROActionPerformed(java.awt.event.ActionEvent evt) {                                                        
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um parceiro para EDITTAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idParce = controle.getListaParceiros().get(linha).getId();
+            registrarParceiro tela = new registrarParceiro(this, idParce);
+            tela.setVisible(true);
+            atualizarTabela();
+        }
     }                                                       
 
     private void jButton2REMOVER_PARCEIROActionPerformed(java.awt.event.ActionEvent evt) {                                                         
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um parceiro para APAGAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            parceiro parce = controle.getListaParceiros().get(linha);
+            int opcao =
+            JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER DELETAR O PARCEIRO " + parce.getId()
+            , "COMFIRME SUA ESOCLHA", JOptionPane.YES_NO_CANCEL_OPTION);
+            if(opcao == 0 && controle.deletar(controle.getListaParceiros().get(linha))) {
+                atualizarTabela();
+            }
+        }
     }                                                        
 
     /**

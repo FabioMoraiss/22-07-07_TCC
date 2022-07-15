@@ -20,6 +20,7 @@ public class registrarContrato extends javax.swing.JFrame {
         this.atttabela = attTabela;
         controle = new controleContrato();
         initComponents();
+        setLocationRelativeTo(null);
         inicializarComponentes();
     }
 
@@ -27,7 +28,19 @@ public class registrarContrato extends javax.swing.JFrame {
         this.atttablea2 = attTabela2;
         controle = new controleContrato();
         initComponents(); 
+        setLocationRelativeTo(null);
         inicializarComponentes();
+    }
+
+    public registrarContrato(listaContratos attTablea, int idContr) { // EDITAR CONTRATO
+        controle = new controleContrato();
+        this.atttabela = attTablea;
+        controle.carregarContrato(idContr);
+        controle.setEditarRegistro(true);
+        initComponents(); 
+        setLocationRelativeTo(null);
+        inicializarComponentes();
+        setarDados();
     }
 
     private void inicializarComponentes() {
@@ -38,24 +51,14 @@ public class registrarContrato extends javax.swing.JFrame {
         jComboBox2ESPACO.setModel(model01);
     }
 
-    public registrarContrato(listaContratos attTablea, int idContr) { // EDITAR CONTRATO
-        controle = new controleContrato();
-        this.atttabela = attTablea;
-        controle.carregarContrato(idContr);
-        controle.setEditarRegistro(true);
-        initComponents(); 
-        setLocationRelativeTo(null);
-        setarDados();
-    }
-
     public void setarDados() {
         jTextField1DATA_INICIO.setText(Tecladinho.getDateFormat().format(controle.getContrato().getData_inicio()));
         jTextField2DATA_FIM.setText(Tecladinho.getDateFormat().format(controle.getContrato().getDuracao()));
         jTextField3VALOR_ENTADA.setText("" +controle.getContrato().getValor_entrada());
         jTextField4VALOR_ALUGUEL.setText(""+ controle.getContrato().getValor_alugel());
         jTextField5PORCEMTAGEM_TAXA.setText(""+controle.getContrato().getPorcemtagem_taxa());
-        jComboBox1PARCEIRO.setSelectedItem(controle.getContrato().getParceiro());
-        jComboBox2ESPACO.setSelectedItem(controle.getContrato().getEspaco());
+        jComboBox1PARCEIRO.setSelectedItem(controle.getContrato().getParceiro().getNome_fantasia());
+        jComboBox2ESPACO.setSelectedItem(controle.getContrato().getEspaco().getId());
     }
 
     /**
@@ -222,16 +225,20 @@ public class registrarContrato extends javax.swing.JFrame {
             String dataFim = jTextField2DATA_FIM.getText();
             String valorEntrada = jTextField3VALOR_ENTADA.getText();
             String porcemtagem = jTextField5PORCEMTAGEM_TAXA.getText();
-            String parceiro = jComboBox1PARCEIRO.getSelectedItem().toString();
-            String espaco = jComboBox2ESPACO.getSelectedItem().toString();
+            String valorAluguel = jTextField4VALOR_ALUGUEL.getText();
+            
+            Boolean estado = true;
+            controle.getContrato().setAtivo(estado);
 
             controle.getContrato().setData_inicio(Tecladinho.getDateFormat().parse(dataInicio));
             controle.getContrato().setDuracao(Tecladinho.getDateFormat().parse(dataFim));
             controle.getContrato().setValor_entrada(Double.parseDouble(valorEntrada));
+            controle.getContrato().setValor_alugel(Double.parseDouble(valorAluguel));
             controle.getContrato().setPorcemtagem_taxa(Double.parseDouble(porcemtagem));
 
             int posiao = jComboBox1PARCEIRO.getSelectedIndex();
             controle.getContrato().setParceiro(controle.getListarparceiros().get(posiao));
+
             int posicao02 = jComboBox2ESPACO.getSelectedIndex();
             controle.getContrato().setEspaco(controle.getListarespacos().get(posicao02));
 

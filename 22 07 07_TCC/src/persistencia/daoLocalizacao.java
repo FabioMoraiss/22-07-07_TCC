@@ -103,7 +103,7 @@ public class daoLocalizacao extends DAO{
     public boolean atualizarLocal(localizacao locali) {
         try {
             String sql = "UPDATE public.localizacao\n" +
-            "descricao=?, andar=?, regiao=?, bloco=?\n" +
+            "SET descricao=?, andar=?, regiao=?, bloco=?\n" +
             "WHERE id = " +locali.getId();
 
             PreparedStatement ps = criaPreparedStatement(sql);

@@ -61,7 +61,7 @@ public class daoParceiro extends DAO {
     public boolean atualizarParceiro(parceiro parce) {
         try {
             String sql = "UPDATE public.parceiro\n" +
-            "nome_fantasia=?, razao_social=?, cnpj=?, email=?, telefone=?\n" +
+            "SET nome_fantasia=?, razao_social=?, cnpj=?, email=?, telefone=?\n" +
             "WHERE id = " + parce.getId();
 
             PreparedStatement ps = criaPreparedStatement(sql);

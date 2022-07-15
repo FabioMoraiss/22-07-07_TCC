@@ -4,17 +4,26 @@
  */
 package JFrameVisual;
 
-/**
- *
- * @author rarinaldo.8077
- */
+import controle.controleFolha_aluguel;
+import modelo.folha_aluguel;
+import javax.swing.JOptionPane;
 public class listaFolha_pagamento extends javax.swing.JFrame {
 
-    /**
-     * Creates new form listaContratos
-     */
+    private controleFolha_aluguel controle;
+    private registrarDIVIDA registarNovaDivida;
+
+
     public listaFolha_pagamento() {
+        controle = new controleFolha_aluguel();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponenteTela();
+    }
+    private void inicializarComponenteTela() {
+        jTable1.setModel(controle.gerardDefaultTableModel());
+    }
+    public void atualizarTabela() {
+        jTable1.setModel(controle.gerardDefaultTableModel());
     }
 
     /**
@@ -124,15 +133,38 @@ public class listaFolha_pagamento extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton3ADICIONAR_DIVIDAActionPerformed(java.awt.event.ActionEvent evt) {                                                         
-        // TODO add your handling code here:
+        registarNovaDivida = new registrarDIVIDA(this);
+        registarNovaDivida.setVisible(true);
+        atualizarTabela();
     }                                                        
 
     private void jButton1EDITAR_DIVIDAActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione uma divida para EDITTAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idDivida = controle.getListaDividas().get(linha).getId();
+            registrarDIVIDA tela = new registrarDIVIDA(this, idDivida);
+            tela.setVisible(true);
+            atualizarTabela();
+        }
     }                                                     
 
     private void jButton2REMOVER_DIVIDAActionPerformed(java.awt.event.ActionEvent evt) {                                                       
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione uma divida para APAGAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            folha_aluguel fol = controle.getListaDividas().get(linha);
+            int opcao =
+            JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER DELETAR A DIVIDA " + fol.getId()
+            , "COMFIRME SUA ESOCLHA", JOptionPane.YES_NO_CANCEL_OPTION);
+            if(opcao == 0 && controle.deletar(controle.getListaDividas().get(linha))) {
+                atualizarTabela();
+            }
+        }
     }                                                      
 
     /**

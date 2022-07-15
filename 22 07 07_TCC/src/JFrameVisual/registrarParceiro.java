@@ -3,20 +3,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package JFrameVisual;
+import controle.Tecladinho;
+import controle.controleParceiro;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author rarinaldo.8077
- */
 public class registrarParceiro extends javax.swing.JFrame {
+    private controleParceiro controle;
+    private listaParceiros atttabela;
+    private telaInicial atttabela2;
 
-    /**
-     * Creates new form registrarContrato
-     */
-    public registrarParceiro() {
+    public registrarParceiro(listaParceiros atttabela) {
+        this.atttabela = atttabela;
+        controle = new controleParceiro();
         initComponents();
     }
+    public registrarParceiro(telaInicial atttabela2) {
+        this.atttabela2 = atttabela2;
+        controle = new controleParceiro();
+        initComponents();
+    }
+    public registrarParceiro(listaParceiros atttabela, int idParceiro) {
+        controle = new controleParceiro();
+        this.atttabela = atttabela;
+        controle.carregarParceiro(idParceiro);
+        controle.setEditarRegistro(true);
+        initComponents();
+        setarDados();
+    }
+    public void setarDados() {
+        jTextField1NOME_FANTASIA.setText(controle.getParceiro().getNome_fantasia());
+        jTextField2RAZAO_SOCIAL.setText(controle.getParceiro().getRazao_social());
+        jTextField3CNPJ.setText(""+controle.getParceiro().getCnpj());
+        EMAIL.setText(controle.getParceiro().getEmail());
+        jTextField4TELEFONE.setText(""+controle.getParceiro().getTelefone());
 
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -146,7 +168,31 @@ public class registrarParceiro extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        try {
+            String nomeFantasia = jTextField1NOME_FANTASIA.getText();
+            String razaoSocial = jTextField2RAZAO_SOCIAL.getText();
+            String cnpj = jTextField3CNPJ.getText();
+            String email = EMAIL.getText();
+            String telefone = jTextField4TELEFONE.getText();
+
+            controle.getParceiro().setNome_fantasia(nomeFantasia);
+            controle.getParceiro().setRazao_social(razaoSocial);
+            controle.getParceiro().setCnpj(Double.parseDouble(cnpj));
+            controle.getParceiro().setEmail(email);
+            controle.getParceiro().setTelefone(Double.parseDouble(telefone));           
+            
+            if(controle.salvar()) {
+                setVisible(true);
+                JOptionPane.showMessageDialog(null, "parceiro registrado com sucesso!\n",
+                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                if(atttabela != null) {
+                    atttabela.atualizarTabela();
+                }
+            }
+        } catch ( Exception e) {
+            JOptionPane.showMessageDialog(null, "falha ao registar parceiro\n" + e.getMessage(),
+        "ERRO 77pp", JOptionPane.ERROR_MESSAGE);
+        }
     }                                          
 
     /**
@@ -176,13 +222,6 @@ public class registrarParceiro extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registrarParceiro().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify                     

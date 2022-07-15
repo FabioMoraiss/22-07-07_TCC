@@ -3,20 +3,47 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package JFrameVisual;
+import controle.Tecladinho;
+import controle.controleFolha_aluguel;
 
-/**
- *
- * @author rarinaldo.8077
- */
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 public class registrarDIVIDA extends javax.swing.JFrame {
+    
+    private controleFolha_aluguel controle;
+    private listaFolha_pagamento atttabela;
+    private telaInicial atttabela2;
 
-    /**
-     * Creates new form registrarContrato
-     */
-    public registrarDIVIDA() {
+    public registrarDIVIDA(listaFolha_pagamento atttabela) {
+        this.atttabela = atttabela;
+        controle = new controleFolha_aluguel();
         initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponentes();
     }
+    public registrarDIVIDA(telaInicial atttabela2) {
+        this.atttabela2 = atttabela2;
+        controle = new controleFolha_aluguel();
+        initComponents();
+        setLocationRelativeTo(null);
+        inicializarComponentes();
+    }
+    public registrarDIVIDA(listaFolha_pagamento atttabela, int idDivida) { //EDITAR DIVIDA 🎈
+        controle = new controleFolha_aluguel();
+        this.atttabela = atttabela;
+        controle.carregarDivida(idDivida);
+        controle.setEditarRegistro(true);
+        setLocationRelativeTo(null);
+        inicializarComponentes();
+        setarDados();
+    }
+    public void inicializarComponentes() {
+        DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<Integer>(controle.exibirContratos());
+        jComboBox1ID_CONTRATO.setModel(model);
+    }
+    public void setarDados() {
 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,7 +82,7 @@ public class registrarDIVIDA extends javax.swing.JFrame {
 
         jLabel7.setText("ID do contrato");
 
-        jComboBox1ID_CONTRATO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //jComboBox1ID_CONTRATO.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1OK.setText("OK");
         jButton1OK.addActionListener(new java.awt.event.ActionListener() {
@@ -147,7 +174,33 @@ public class registrarDIVIDA extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        try {
+            String valor = jTextField1VALOR.getText();
+            String descricao = jTextField2DESCRICAO.getText();
+            String numeroParcela = jTextField3NUMERO_PARCELA.getText();
+            String dataVencimento = jTextField4DATA_VENCIMENTO.getText();
+
+            int posicao = jComboBox1ID_CONTRATO.getSelectedIndex();
+            controle.getFolha_aluguel().setContrato(controle.getListarContratos().get(posicao));
+
+            controle.getFolha_aluguel().setValor(Double.parseDouble(valor));
+            controle.getFolha_aluguel().setDescricao(descricao);
+            controle.getFolha_aluguel().setNumero_parcela(Integer.parseInt(numeroParcela));
+            controle.getFolha_aluguel().setData_vencimento(Tecladinho.getDateFormat().parse(dataVencimento));
+
+
+            if(controle.salvar()) {
+                setVisible(true);
+                JOptionPane.showMessageDialog(null, "divida registrada com sucesso\n",
+                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                if (atttabela != null) {
+                    atttabela.atualizarTabela();
+                }
+            }
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "falha ao registar divida\n" + e.getMessage(),
+        "ERRO 22qq", JOptionPane.ERROR_MESSAGE);
+        }
     }                                          
 
     /**
@@ -179,16 +232,12 @@ public class registrarDIVIDA extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registrarDIVIDA().setVisible(true);
-            }
-        });
+
     }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1OK;
-    private javax.swing.JComboBox<String> jComboBox1ID_CONTRATO;
+    private javax.swing.JComboBox<Integer> jComboBox1ID_CONTRATO;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -18,11 +18,13 @@ public class registrarEspaco extends javax.swing.JFrame {
         this.atttabela = atttabela;
         controle = new controleEspaco();
         initComponents();
+        inicializarComponentes();
     }
     public registrarEspaco(telaInicial atttabela2) {
         this.atttabela2 = atttabela2;
         controle = new controleEspaco();
         initComponents();
+        inicializarComponentes();
     }
     public registrarEspaco(listaEspacos atttabela, int idEspaco) {
         controle = new controleEspaco();
@@ -30,7 +32,9 @@ public class registrarEspaco extends javax.swing.JFrame {
         controle.carregarEspaco(idEspaco);
         controle.setEditarRegistro(true);
         initComponents();
+        inicializarComponentes();
         setarDados();
+        
     }
 
     public void inicializarComponentes() {
@@ -41,7 +45,7 @@ public class registrarEspaco extends javax.swing.JFrame {
     public void setarDados() {
         jTextField1METROS_QUADRADOS.setText(""+controle.getEspaco().getMetros_quadrados());
         jComboBox3KIOSQUE_LOJA.setSelectedItem(controle.getEspaco().getKiosque_loja());
-        jComboBox1LOCALIZACAO.setSelectedItem(controle.getEspaco().getLocalizacao());
+        jComboBox1LOCALIZACAO.setSelectedItem(controle.getEspaco().getLocalizacao().getId());
 
 
     }
@@ -158,6 +162,7 @@ public class registrarEspaco extends javax.swing.JFrame {
         try {
             String metrosQuadrados = jTextField1METROS_QUADRADOS.getText();
             String kiosqueLoja = jComboBox3KIOSQUE_LOJA.getSelectedItem().toString();
+
             if(kiosqueLoja.equalsIgnoreCase("Kiosque")) {
                 controle.getEspaco().setKiosque_loja(false);
             } else {

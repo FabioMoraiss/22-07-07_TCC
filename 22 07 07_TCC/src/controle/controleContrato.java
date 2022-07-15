@@ -9,6 +9,8 @@ import persistencia.daoContrato;
 import persistencia.daoParceiro;
 import persistencia.daoEspaco;
 
+import javax.swing.JOptionPane;
+
 
 public class controleContrato {
     private contrato contrato;
@@ -125,6 +127,11 @@ public class controleContrato {
 
     public void carregarContrato(int idcontrato) {
         contrato = daocontrato.carregarContratoEspecifio(idcontrato);
+        if(contrato == null) {
+            JOptionPane.showMessageDialog(null, "o contrato nao foi carregado\n" + idcontrato,
+                "erro 445j", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
     public boolean salvar() {
         if (this.editarRegistro == true) {

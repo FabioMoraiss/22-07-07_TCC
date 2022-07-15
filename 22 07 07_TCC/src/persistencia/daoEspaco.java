@@ -35,7 +35,7 @@ public class daoEspaco extends DAO {
 
                 espaco.setId(rs.getInt("id"));
                 espaco.setMetros_quadrados(rs.getDouble("metros_quadrados"));
-                espaco.setEstado_alugado(rs.getBoolean("estado_alugado"));
+                espaco.setEstado_alugado(rs.getBoolean("esta_alugado"));
                 espaco.setKiosque_loja(rs.getBoolean("kiosque_loja"));
 
                 if(rs.getObject("id_localizacao", Integer.class) != null) {

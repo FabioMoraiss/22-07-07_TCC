@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import JFrameVisual.listaEspacos;
+import JFrameVisual.listaLocais;
 import JFrameVisual.registrarEspaco;
 import modelo.espaco;
 import modelo.folha_aluguel;
@@ -128,7 +129,7 @@ public class controleEspaco {
     public Integer[] exibirLocalizacao() {
         Integer[] locais = new Integer[listarlocais.size()];
         for(int i = 0; i<listarlocais.size(); i++) {
-            locais[i]  =listaEspacos.get(i).getId();
+            locais[i]  =listarlocais.get(i).getId();
         }
         return locais;
     }
