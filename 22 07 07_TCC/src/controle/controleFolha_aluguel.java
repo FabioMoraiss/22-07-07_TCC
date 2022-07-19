@@ -127,9 +127,10 @@ public class controleFolha_aluguel {
        return model;
     }
     public Integer[] exibirContratos() {
-        Integer[] contratos = new Integer[listarContratos.size()];
+        Integer[] contratos = new Integer[listarContratos.size()+1];
+        contratos[0] = null;
         for(int i = 0; i<listarContratos.size(); i++) {
-            contratos[i] = listarContratos.get(i).getId();
+            contratos[i+1] = listarContratos.get(i).getId();
         }
         return contratos;
     }

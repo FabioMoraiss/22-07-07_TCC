@@ -162,13 +162,36 @@ public class daoContrato extends DAO {
             ps.setDouble(3, contr.getValor_alugel());
             ps.setDouble(4, contr.getPorcemtagem_taxa());
             ps.setDate(5, new java.sql.Date(contr.getData_inicio().getTime()));
+            ps.setBoolean(6, contr.getAtivo());
 
             
-            if (contr.getParceiro().getId() == null || contr.getParceiro().getId() == 0) {
+            /*if (contr.getParceiro().getId() == null || contr.getParceiro().getId() == 0) {
                 ps.setInt(6, contr.getParceiro().getId());
             }
             if (contr.getEspaco().getId() == null || contr.getEspaco().getId() == 0) {
-                ps.setInt(6, contr.getEspaco().getId());
+                ps.setInt(7, contr.getEspaco().getId());
+            }*/
+
+            if(contr.getParceiro() != null) {
+                if(contr.getParceiro().getId() == null) {
+                    daoParceiro.registrarParceiro(contr.getParceiro());
+                } else {
+                    daoParceiro.atualizarParceiro(contr.getParceiro());
+                }
+                ps.setInt(7, contr.getParceiro().getId());
+            } else {
+                ps.setObject(7, null);
+            }
+
+            if(contr.getEspaco() != null) {
+                if(contr.getEspaco().getId() == null) {
+                    daoEspaco.registrarEspaco(contr.getEspaco());
+                } else {
+                    daoEspaco.atualizarEspaco(contr.getEspaco());
+                }
+                ps.setInt(8, contr.getEspaco().getId());
+            } else {
+                ps.setObject(8, null);
             }
 
             ps.executeUpdate();

@@ -25,6 +25,7 @@ public class daoFolha_aluguel extends DAO{
             "order by folha_alugel.id;" ;
 
             ResultSet rs = consultaSQL(sql);
+
             while(rs.next()) {
                 folha_aluguel folha = new folha_aluguel();
 
@@ -52,6 +53,8 @@ public class daoFolha_aluguel extends DAO{
                     folha.getContrato().setData_inicio(rs.getDate("data_inicio"));
                     folha.getContrato().setAtivo(rs.getBoolean("ativo")); */
 
+                    guias.add(folha);
+
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ("falha ao carregar folha de aluguel\n" + ex.getMessage()),
@@ -74,9 +77,18 @@ public class daoFolha_aluguel extends DAO{
                 ps.setString(4, fol.getDescricao());
                 ps.setInt(5, fol.getNumero_parcela());
                 ps.setDate(6, new java.sql.Date(fol.getData_vencimento().getTime()));
-                ps.setInt(7, fol.getContrato().getId());
+                //ps.setInt(7, fol.getContrato().getId());
 
-                ps.execute();
+                if(fol.getContrato() != null) {
+                    if(fol.getContrato().getId() == null || fol.getContrato().getId() == 0) {
+                        daocontrato.salvar(fol.getContrato());
+                    }
+                    ps.setInt(7, fol.getContrato().getId());
+                } else {
+                    ps.setObject(7, null);
+                }
+
+                ps.executeUpdate();
                 return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ("falha ao registrar divida\n" + ex.getMessage()),
@@ -89,16 +101,28 @@ public class daoFolha_aluguel extends DAO{
     public boolean atualizarDivida(folha_aluguel fol) {
         try {
             String sql = "UPDATE public.folha_alugel\n" +
-            "SET id=?, valor=?, foi_pago=?, descricao=?, numero_parcela=?, data_vencimento=?, id_contrato=?\n" +
+            "SET valor=?, foi_pago=?, descricao=?, numero_parcela=?, data_vencimento=?, id_contrato=?\n" +
             "WHERE id = " + fol.getId();
 
             PreparedStatement ps = criaPreparedStatement(sql);
 
-            ps.setDouble(1, fol.getValor());
-                ps.setString(2, fol.getDescricao());
-                ps.setInt(3, fol.getNumero_parcela());
-                ps.setDate(4, new java.sql.Date(fol.getData_vencimento().getTime()));
-                ps.setInt(5, fol.getContrato().getId());
+                ps.setDouble(1, fol.getValor());
+                ps.setBoolean(2, fol.getFoi_pago());
+                ps.setString(3, fol.getDescricao());
+                ps.setInt(4, fol.getNumero_parcela());
+                ps.setDate(5, new java.sql.Date(fol.getData_vencimento().getTime()));
+                //ps.setInt(6, fol.getContrato().getId());
+
+               if(fol.getContrato() != null) {
+                    if(fol.getContrato().getId() == null) {
+                    daocontrato.salvar(fol.getContrato());
+                    } else {
+                    daocontrato.atualizarContrato(fol.getContrato());
+                 }
+                ps.setInt(6, fol.getContrato().getId());
+               } else {
+                ps.setObject(6, null);
+               }
 
                 ps.executeUpdate();
                 return true;
@@ -113,7 +137,7 @@ public class daoFolha_aluguel extends DAO{
     public folha_aluguel carregarDividaEspecifica(int id) {
         folha_aluguel dividaEspecifica = null;
         try {
-            String sql = "selec * from public.folha_aluguel\n" +
+            String sql = "select * from public.folha_alugel\n" +
             "where id = " +id;
 
             ResultSet rs = consultaSQL(sql);
@@ -121,17 +145,24 @@ public class daoFolha_aluguel extends DAO{
             while(rs.next()) {
                 dividaEspecifica = new folha_aluguel();
 
+                dividaEspecifica.setId(id);
                 dividaEspecifica.setValor(rs.getDouble("valor"));
                 dividaEspecifica.setFoi_pago(rs.getBoolean("foi_pago"));
                 dividaEspecifica.setDescricao(rs.getString("descricao"));
                 dividaEspecifica.setNumero_parcela(rs.getInt("numero_parcela"));
                 dividaEspecifica.setData_vencimento(rs.getDate("data_vencimento"));
 
-                if(rs.getObject("id_contrato", Integer.class) != null) {
+                /*if(rs.getObject("id_contrato", Integer.class) != null) {
                     dividaEspecifica.getContrato().setId(rs.getInt("id_contrato"));
                     dividaEspecifica.getContrato().getParceiro().setNome_fantasia(rs.getString("nome_fantasia"));
                     dividaEspecifica.getContrato().getEspaco().setId(rs.getInt("id_espaco"));
+            } */
+
+            Integer idContrato = rs.getInt("id_contrato");
+            if(idContrato != null && idContrato >0) {
+                dividaEspecifica.setContrato(daocontrato.carregarContratoEspecifio(idContrato));
             }
+
         }
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null,("falha ao carregar divida especifica\n" + ex.getMessage()),
@@ -142,13 +173,13 @@ public class daoFolha_aluguel extends DAO{
     }
     public boolean removerDivida(folha_aluguel fol) {
         try {
-            String sql = "DELETE FROM public.folha_aluguel\n" +
+            String sql = "DELETE FROM public.folha_alugel\n" +
             "WHERE ID = " + fol.getId();
 
             executeDeleteSQL(sql);
             return true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ("falha ao deletar cliente\n" + ex.getMessage()),
+            JOptionPane.showMessageDialog(null, ("falha ao deletar divida\n" + ex.getMessage()),
              "erro 11qq", JOptionPane.ERROR_MESSAGE);
 
              return false;
