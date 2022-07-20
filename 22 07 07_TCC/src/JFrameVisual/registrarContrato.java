@@ -45,6 +45,8 @@ public class registrarContrato extends javax.swing.JFrame {
     }
 
     private void inicializarComponentes() {
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setEnabled(false);
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(controle.exibirParceiros());
         jComboBox1PARCEIRO.setModel(model);
 
@@ -60,7 +62,18 @@ public class registrarContrato extends javax.swing.JFrame {
         jTextField5PORCEMTAGEM_TAXA.setText(""+controle.getContrato().getPorcemtagem_taxa());
         jComboBox1PARCEIRO.setSelectedItem(controle.getContrato().getParceiro().getNome_fantasia());
         jComboBox2ESPACO.setSelectedItem(controle.getContrato().getEspaco().getId());
+        jCheckBox1.setSelected(controle.getContrato().getAtivo());
     }
+    public void limparDados() {
+        jTextField1DATA_INICIO.setText("");
+        jTextField2DATA_FIM.setText("");
+        jTextField3VALOR_ENTADA.setText("");
+        jTextField4VALOR_ALUGUEL.setText("");
+        jTextField5PORCEMTAGEM_TAXA.setText("");
+        jComboBox1PARCEIRO.setSelectedItem(null);
+        jComboBox2ESPACO.setSelectedItem(null);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,6 +101,7 @@ public class registrarContrato extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jComboBox2ESPACO = new javax.swing.JComboBox<>();
         jButton1OK = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -119,6 +133,13 @@ public class registrarContrato extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("ativo");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,16 +154,19 @@ public class registrarContrato extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(jComboBox1PARCEIRO, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox2ESPACO, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField2DATA_FIM, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                                    .addComponent(jTextField1DATA_INICIO))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jTextField1DATA_INICIO)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(jComboBox1PARCEIRO, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox2ESPACO, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jCheckBox1)
+                                        .addGap(59, 59, 59))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -185,12 +209,12 @@ public class registrarContrato extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
+                    .addComponent(jTextField4VALOR_ALUGUEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField2DATA_FIM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField4VALOR_ALUGUEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField5PORCEMTAGEM_TAXA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(41, 41, 41)
@@ -199,9 +223,11 @@ public class registrarContrato extends javax.swing.JFrame {
                     .addComponent(jComboBox1PARCEIRO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jComboBox2ESPACO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
+                .addGap(34, 34, 34)
                 .addComponent(jButton1OK)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,7 +244,7 @@ public class registrarContrato extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>                                          
 
     private void jButton1OKActionPerformed(java.awt.event.ActionEvent evt) {                                           
         try {
@@ -228,7 +254,7 @@ public class registrarContrato extends javax.swing.JFrame {
             String porcemtagem = jTextField5PORCEMTAGEM_TAXA.getText();
             String valorAluguel = jTextField4VALOR_ALUGUEL.getText();
             
-            Boolean estado = true;
+            Boolean estado = jCheckBox1.isSelected();
             controle.getContrato().setAtivo(estado);
 
             controle.getContrato().setData_inicio(Tecladinho.getDateFormat().parse(dataInicio));
@@ -243,20 +269,40 @@ public class registrarContrato extends javax.swing.JFrame {
             int posicao02 = jComboBox2ESPACO.getSelectedIndex();
             controle.getContrato().setEspaco(controle.getListarespacos().get(posicao02));
 
+            if(controle.getContrato().getEspaco().getEstado_alugado() == true) {
+                JOptionPane.showMessageDialog(null, "falha ao registar contrato\n" + "o espaço ja esta alugado !",
+                "ERRO 66kj", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
+
+            controle.getContrato().getEspaco().setEstado_alugado(true);
+
+
             if(controle.salvar()) {
+
                 setVisible(true);
-                JOptionPane.showMessageDialog(null, "contrato registrado com sucesso\n",
-                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                int retorno =
+                JOptionPane.showConfirmDialog(null, "Contrato registrado com sucesso !\n" + 
+                "você deseja registar um novo contrato ?", "Opções", JOptionPane.YES_NO_OPTION);
+                if(retorno ==0) {
+                    limparDados();
+                } else {
+                    setVisible(false);
+                }
                 if(atttabela != null) {
                     atttabela.atualizarTabela();
                 }
+
             }
         }catch (Exception e) {
             JOptionPane.showMessageDialog(null, "falha ao registar contrato\n" + e.getMessage(),
         "ERRO 53jj", JOptionPane.ERROR_MESSAGE);
         }
     }                                          
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
 
+    }            
     /**
      * @param args the command line arguments
      */
@@ -304,6 +350,8 @@ public class registrarContrato extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3VALOR_ENTADA;
     private javax.swing.JTextField jTextField4VALOR_ALUGUEL;
     private javax.swing.JTextField jTextField5PORCEMTAGEM_TAXA;
+    private javax.swing.JCheckBox jCheckBox1;
+    
     // End of variables declaration                   
 }
 

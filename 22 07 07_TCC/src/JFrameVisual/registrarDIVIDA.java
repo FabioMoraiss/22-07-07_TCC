@@ -52,6 +52,14 @@ public class registrarDIVIDA extends javax.swing.JFrame {
         jComboBox1ID_CONTRATO.setSelectedItem(controle.getFolha_aluguel().getContrato().getId());
 
     }
+    public void limparDados() {
+        jTextField1VALOR.setText("");
+        jTextField2DESCRICAO.setText("");
+        jTextField3NUMERO_PARCELA.setText("");
+        jTextField4DATA_VENCIMENTO.setText("");
+        jComboBox1ID_CONTRATO.setSelectedIndex(1);
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,6 +90,12 @@ public class registrarDIVIDA extends javax.swing.JFrame {
         jLabel1.setText("REGISTRO DE DIVIDA");
 
         jLabel2.setText("valor");
+
+        jTextField1VALOR.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1VALORFocusLost(evt);
+            }
+        });
 
         jLabel3.setText("descrição");
 
@@ -235,8 +249,15 @@ public class registrarDIVIDA extends javax.swing.JFrame {
 
             if(controle.salvar()) { // para salvar o contrato
                 setVisible(true);
-                JOptionPane.showMessageDialog(null, "divida registrada com sucesso\n",
-                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                int retorno =
+                JOptionPane.showConfirmDialog(null, "Divida registrada com sucesso ! \n" +
+                "você deseja registar uma nova divida ?", "Opções", JOptionPane.YES_NO_OPTION);
+                if(retorno ==0) {
+                    limparDados();
+                } else {
+                    setVisible(false);
+                }
+
                 if (atttabela != null) {
                     atttabela.atualizarTabela();
                 }

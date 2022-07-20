@@ -44,6 +44,7 @@ public class listaContratos extends javax.swing.JFrame {
         jButton1EDITAR_CONTRATO = new javax.swing.JButton();
         jButton2REMVER_CONTRATO = new javax.swing.JButton();
         jButton3ADICIONAR_CONTRATO = new javax.swing.JButton();
+        jToggleButton1FINALIZAR_CONTRATO = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -86,6 +87,13 @@ public class listaContratos extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1FINALIZAR_CONTRATO.setText("Finalizar contrato");
+        jToggleButton1FINALIZAR_CONTRATO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1FINALIZAR_CONTRATOActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -94,13 +102,15 @@ public class listaContratos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jButton3ADICIONAR_CONTRATO)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+                .addGap(97, 97, 97)
                 .addComponent(jButton1EDITAR_CONTRATO)
-                .addGap(197, 197, 197)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToggleButton1FINALIZAR_CONTRATO)
+                .addGap(105, 105, 105)
                 .addComponent(jButton2REMVER_CONTRATO)
                 .addGap(78, 78, 78))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(406, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(391, 391, 391))
         );
@@ -113,7 +123,9 @@ public class listaContratos extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2REMVER_CONTRATO)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2REMVER_CONTRATO)
+                        .addComponent(jToggleButton1FINALIZAR_CONTRATO))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1EDITAR_CONTRATO)
                         .addComponent(jButton3ADICIONAR_CONTRATO)))
@@ -132,7 +144,7 @@ public class listaContratos extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>                          
 
     private void jButton3ADICIONAR_CONTRATOActionPerformed(java.awt.event.ActionEvent evt) {                                                           
         registrarNovoContrato = new registrarContrato(this);
@@ -167,7 +179,35 @@ public class listaContratos extends javax.swing.JFrame {
                 atualizarTabela();
             }
         }
-    }                                                       
+    }    
+    
+    private void jToggleButton1FINALIZAR_CONTRATOActionPerformed(java.awt.event.ActionEvent evt) {                                                                 
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(null, "selecione um contrato para FINALIZAR", 
+           "você esqueceu uma coisa !", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (controle.getListaContratos().get(linha).getAtivo() == false) {
+                JOptionPane.showMessageDialog(null, "selecione o contrato já esta inativo !", 
+           "erro 47tu", JOptionPane.WARNING_MESSAGE);
+
+            } else {
+                contrato contr = controle.getListaContratos().get(linha);
+                int opcao =
+                JOptionPane.showConfirmDialog(null, "VOCÊ TEM CERTEZA QUE QUER finalizar o contrato " + contr.getId()
+                , "COMFIRME SUA ESOCLHA", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                if(opcao == 0 && controle.finalizar(controle.getListaContratos().get(linha))) {
+
+                    if(controle.desocupar(controle.getListaContratos().get(linha)));
+
+                    atualizarTabela();
+
+                }
+            }
+
+        }
+    } 
 
     /**
      * @param args the command line arguments
@@ -212,5 +252,6 @@ public class listaContratos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JToggleButton jToggleButton1FINALIZAR_CONTRATO;
     // End of variables declaration                   
 }

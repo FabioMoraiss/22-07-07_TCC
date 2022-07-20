@@ -39,6 +39,12 @@ public class registrarLocalizacao extends javax.swing.JFrame {
         jComboBox1REGIAO.setSelectedItem(controle.getLocalizacao().getRegiao());
         jComboBox2BLOCO.setSelectedItem(controle.getLocalizacao().getBloco());
     }
+    public void limparDados() {
+        jTextField1DESCRICAO.setText("");
+        jComboBox3ANDAR.setSelectedItem(null);
+        jComboBox1REGIAO.setSelectedItem(null);
+        jComboBox2BLOCO.setSelectedItem(null);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -184,8 +190,14 @@ public class registrarLocalizacao extends javax.swing.JFrame {
 
             if(controle.salvar()) {
                 setVisible(true);
-                JOptionPane.showMessageDialog(null, "localização registrada com sucesso\n",
-                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                int retorno =
+                JOptionPane.showConfirmDialog(null, "Localização registrada com sucesso !\n" +
+                "você deseja registar uma nova localização ?", "Opções", JOptionPane.YES_NO_OPTION);
+                if(retorno ==0) {
+                    limparDados();
+                } else {
+                    setVisible(false);
+                }
 
                 if(atttabela != null) {
                     atttabela.atualizarTabela();

@@ -2,6 +2,7 @@ package persistencia;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.print.DocFlavor.STRING;
@@ -9,15 +10,18 @@ import javax.swing.JOptionPane;
 import javax.xml.transform.SourceLocator;
 import java.sql.PreparedStatement;
 
+import modelo.folha_aluguel;
 import modelo.contrato;
 
 public class daoContrato extends DAO {
     private daoParceiro daoParceiro;
     private daoEspaco daoEspaco;
+    private daoFolha_aluguel daoFolha_aluguel;
 
     public daoContrato() {
         daoParceiro = new daoParceiro();
         daoEspaco = new daoEspaco();
+        //daoFolha_aluguel = new daoFolha_aluguel();
     }
 
 
@@ -119,6 +123,8 @@ public class daoContrato extends DAO {
                 if(contr.getEspaco() != null) {
                     if (contr.getEspaco().getId() == null || contr.getEspaco().getId() == 0) {
                         daoEspaco.registrarEspaco(contr.getEspaco()) ;
+                    } else {
+                        daoEspaco.atualizarEspaco(contr.getEspaco());
                     }
                     ps.setObject(9, contr.getEspaco().getId());
                 } else {
@@ -126,6 +132,8 @@ public class daoContrato extends DAO {
                 }
 
                 ps.execute();
+
+                salvarGuiaAutomatico(contr);
                 return true;
         }catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ("falha ao salvar contrato\n" + ex.getMessage()),
@@ -133,6 +141,23 @@ public class daoContrato extends DAO {
 
              return false ;
         }
+    }
+
+    private void salvarGuiaAutomatico(contrato contr) {
+        daoFolha_aluguel = new daoFolha_aluguel();
+        folha_aluguel fol = new folha_aluguel();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(contr.getData_inicio());
+        cal.add(Calendar.MONTH, 1);
+
+        fol.setContrato(contr);
+        fol.setData_vencimento(cal.getTime());
+        fol.setValor(contr.getValor_entrada());
+        fol.setDescricao("primeira guia automatica");
+        fol.setFoi_pago(false);
+        fol.setNumero_parcela(0);
+
+        daoFolha_aluguel.registarDivida(fol);
     }
 
     public boolean removerContrato(contrato contr) {
@@ -147,6 +172,22 @@ public class daoContrato extends DAO {
             JOptionPane.showMessageDialog(null,("falha ao deletar contrato\n" + ex.getMessage()),
              "erro 22ii", JOptionPane.ERROR_MESSAGE);
              return false ;
+        }
+    }
+
+    public boolean finalizarContrato(contrato contr) {
+        try {
+            String sql = "UPDATE public.contrato\n" +
+            "set ativo = false\n" +
+            "where id = " +contr.getId();
+
+            executeDeleteSQL(sql);
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ("falha ao finalizar contrato" + ex.getMessage()),
+             "erro 2244pg", JOptionPane.ERROR_MESSAGE);
+
+             return false;
         }
     }
     public boolean atualizarContrato(contrato contr) {

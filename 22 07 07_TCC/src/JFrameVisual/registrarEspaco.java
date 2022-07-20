@@ -49,6 +49,13 @@ public class registrarEspaco extends javax.swing.JFrame {
 
 
     }
+    public void limparDados() {
+        jTextField1METROS_QUADRADOS.setText("");
+        jComboBox3KIOSQUE_LOJA.setSelectedItem(null);
+        jComboBox1LOCALIZACAO.setSelectedItem(null);
+
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -181,8 +188,14 @@ public class registrarEspaco extends javax.swing.JFrame {
 
             if(controle.salvar()) {
                 setVisible(true);
-                JOptionPane.showMessageDialog(null, "espaço registrado com sucesso\n",
-                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                int retorno =
+                JOptionPane.showConfirmDialog(null, "Espaço registrado com sucesso !" +
+                "você deseja registar um novo espaço ?", "Opções", JOptionPane.YES_NO_OPTION);
+                if(retorno ==0) {
+                    limparDados();
+                } else {
+                    setVisible(false);
+                }
 
                 if(atttabela != null) {
                     atttabela.atualizarTabela();

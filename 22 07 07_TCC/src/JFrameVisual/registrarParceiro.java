@@ -36,8 +36,13 @@ public class registrarParceiro extends javax.swing.JFrame {
         jTextField3CNPJ.setText(""+controle.getParceiro().getCnpj());
         EMAIL.setText(controle.getParceiro().getEmail());
         jTextField4TELEFONE.setText(""+controle.getParceiro().getTelefone());
-
-
+    }
+    public void limparDados() {
+        jTextField1NOME_FANTASIA.setText("");
+        jTextField2RAZAO_SOCIAL.setText("");
+        jTextField3CNPJ.setText("");
+        EMAIL.setText("");
+        jTextField4TELEFONE.setText("");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,8 +188,15 @@ public class registrarParceiro extends javax.swing.JFrame {
             
             if(controle.salvar()) {
                 setVisible(true);
-                JOptionPane.showMessageDialog(null, "parceiro registrado com sucesso!\n",
-                "suceso !", JOptionPane.INFORMATION_MESSAGE);
+                int retorno =
+                JOptionPane.showConfirmDialog(null, "Parceiro registrado com sucesso !\n" +
+                "você deseja registar um novo parceiro ?", "Opções", JOptionPane.YES_NO_OPTION);
+                if(retorno ==0) {
+                    limparDados();
+                } else {
+                    setVisible(false);
+                }
+
                 if(atttabela != null) {
                     atttabela.atualizarTabela();
                 }

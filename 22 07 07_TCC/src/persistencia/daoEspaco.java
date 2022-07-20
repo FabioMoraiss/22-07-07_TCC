@@ -167,5 +167,21 @@ public class daoEspaco extends DAO {
              return false;
         }
     }
+
+    public boolean desocuparEspaco(espaco espace) {
+        try {
+            String sql = "UPDATE public.espaco\n" +
+            "set esta_alugado = false\n" +
+            "where id = " +espace.getId();
+
+            executeDeleteSQL(sql);
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ("falha ao desocupar espaço\n" + ex.getMessage()),
+             "erro 992q", JOptionPane.ERROR_MESSAGE);
+
+             return false;
+        }
+    }
     
 }

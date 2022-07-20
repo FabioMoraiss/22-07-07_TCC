@@ -144,6 +144,13 @@ public class controleContrato {
         return daocontrato.removerContrato(contr);
     }
 
+    public boolean finalizar(contrato contr) {
+        return daocontrato.finalizarContrato(contr);
+    }
+    public boolean desocupar(contrato contr) {
+        return daoEspaco.desocuparEspaco(contr.getEspaco());
+    }
+
     public void carregarContratos() {
         listaContratos = daocontrato.carregarTodosContratos();
     }
